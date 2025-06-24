@@ -17,7 +17,7 @@ function App() {
     setShowResult(false); // Hide result while loading
 
     try {
-      const res = await axios.post("http://127.0.0.1:8000/recommend", {
+      const res = await axios.post("https://ai-recomendation-backend-1.onrender.com/recommend", {
         interests: interests.split(",").map((s) => s.trim()),
         budget: parseFloat(budget),
       });
