@@ -7,7 +7,7 @@ function App() {
   const [recommendations, setRecommendations] = useState("");
 
   const getRecommendations = async () => {
-    const res = await axios.post("http://127.0.0.1:8000/recommend", {
+    const res = await axios.post("https://ai-recomendation-backend.onrender.com/recommend", {
       interests: interests.split(","),
       budget: parseFloat(budget)
     });
