@@ -12,6 +12,7 @@ function App() {
   const [showResult, setShowResult] = useState(false);
 
   const getRecommendations = async () => {
+<<<<<<< HEAD
     setLoading(true);
     setRecommendations("");
     setShowResult(false); // Hide result while loading
@@ -30,6 +31,13 @@ function App() {
     } finally {
       setLoading(false);
     }
+=======
+    const res = await axios.post("https://ai-recomendation-backend.onrender.com/recommend", {
+      interests: interests.split(","),
+      budget: parseFloat(budget)
+    });
+    setRecommendations(res.data.recommendations);
+>>>>>>> f08c8a7ea5bb66a8552663487ac367841e191826
   };
 
   return (
