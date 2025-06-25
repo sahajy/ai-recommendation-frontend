@@ -1,68 +1,79 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
+
+const API = "http://127.0.0.1:5000"; 
 
 function App() {
   const [interests, setInterests] = useState("");
   const [budget, setBudget] = useState("");
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [recommendations, setRecommendations] = useState("");
   const [loading, setLoading] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
 
-  const getRecommendations = async () => {
-    setLoading(true);
-    setRecommendations("");
-    try {
-      const res = await axios.post(
-        "https://ai-recomendation-backend-1.onrender.com/recommend", 
-        {
-          interests: interests.split(",").map((i) => i.trim()),
-          budget: parseFloat(budget),
-        }
-      );
-      setRecommendations(res.data.recommendations);
-    } catch (err) {
-      setRecommendations("⚠️ Error fetching recommendations.");
-    } finally {
-      setLoading(false);
-    }
+  const productCatalog = [
+    { id: "prod001", name: "Running Shoes", category: "Footwear", price: 1299 },
+    { id: "prod002", name: "Wireless Earbuds", category: "Electronics", price: 1999 },
+    { id: "prod003", name: "Graphic T-Shirt", category: "Clothing", price: 699 },
+  ];
+
+  const toggleProduct = (id) => {
+    setSelectedProducts((prev) =>
+      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
+    );
   };
 
-  const toggleTheme = () => setDarkMode((prev) => !prev);
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      await axios.post(`${API}/preferences`, {
+        interests: interests.split(",").map((s) => s.trim()),
+        budget: parseFloat(budget),
+      });
+
+      await axios.post(`${API}/history`, {
+        product_ids: selectedProducts,
+      });
+
+      const res = await axios.get(`${API}/recommend`);
+      setRecommendations(res.data.recommendations);
+    } catch (err) {
+      console.error(err);
+      setRecommendations("Something went wrong.");
+    }
+    setLoading(false);
+  };
 
   return (
-    <div className={`app ${darkMode ? "dark" : "light"}`}>
-      <div className="container">
-        <div className="header">
-          <span className="icon">🪄</span>
-          <h1>AI Product Recommender</h1>
-          <button className="theme-toggle" onClick={toggleTheme}>
-            {darkMode ? "💡" : "🌙"}
-          </button>
-        </div>
-
-        <input
-          value={interests}
-          onChange={(e) => setInterests(e.target.value)}
-          placeholder="Enter interests (e.g., tech, wallet)"
-        />
-        <input
-          value={budget}
-          onChange={(e) => setBudget(e.target.value)}
-          placeholder="Enter budget"
-          type="number"
-        />
-        <button onClick={getRecommendations} disabled={loading}>
-          🎯 {loading ? "Loading..." : "Get Recommendations"}
-        </button>
-
-        {recommendations && (
-          <div className="recommendation-box fade-in">
-            <h2>🔍 Recommendations:</h2>
-            <pre>{recommendations}</pre>
+    <div className="App">
+      <h1>AI Product Recommender</h1>
+      <input
+        type="text"
+        placeholder="Your interests (comma separated)"
+        value={interests}
+        onChange={(e) => setInterests(e.target.value)}
+      />
+      <input
+        type="number"
+        placeholder="Your budget (₹)"
+        value={budget}
+        onChange={(e) => setBudget(e.target.value)}
+      />
+      <div className="product-list">
+        {productCatalog.map((p) => (
+          <div
+            key={p.id}
+            className={`product ${selectedProducts.includes(p.id) ? "selected" : ""}`}
+            onClick={() => toggleProduct(p.id)}
+          >
+            {p.name} – ₹{p.price} ({p.category})
           </div>
-        )}
+        ))}
       </div>
+      <button onClick={handleSubmit} disabled={loading}>
+        {loading ? "Getting Recommendations..." : "Get Recommendations"}
+      </button>
+      <pre className="recommendations">{recommendations}</pre>
     </div>
   );
 }
