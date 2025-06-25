@@ -1,112 +1,73 @@
-body {
-  margin: 0;
-  font-family: "Segoe UI", sans-serif;
-}
-
-.app {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  transition: background 0.3s;
-}
-
-.app.dark {
-  background: linear-gradient(to right, #1e1e30, #3e3e60);
-  color: #fff;
-}
-
-.app.light {
-  background: linear-gradient(to right, #f2f2f2, #e0e0e0);
-  color: #000;
-}
-
-.container {
-  background-color: var(--container-bg, #2a2a3b);
-  padding: 30px;
-  border-radius: 15px;
-  width: 100%;
-  max-width: 500px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.header h1 {
-  margin: 0;
-  font-size: 1.8em;
+.App {
+  font-family: Arial, sans-serif;
+  padding: 2rem;
+  max-width: 700px;
+  margin: auto;
+  text-align: center;
+  background-color: #f4f4f4;
+  border-radius: 10px;
 }
 
 input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 0.75rem;
+  margin: 0.5rem;
+  width: 90%;
+  max-width: 400px;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  border: none;
-  font-size: 1em;
+  font-size: 1rem;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 1rem;
+  gap: 10px;
+}
+
+.product {
+  padding: 10px 16px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.product:hover {
+  background-color: #e6f0ff;
+  border-color: #007bff;
+}
+
+.product.selected {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
 }
 
 button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  font-size: 1em;
-  background-color: #2ac4f2;
+  margin-top: 1rem;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
   border: none;
   border-radius: 8px;
-  font-weight: bold;
-  color: #000;
+  background-color: #007bff;
+  color: white;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #1daae0;
+  background-color: #0056b3;
 }
 
-.theme-toggle {
-  background: none;
-  border: none;
-  font-size: 1.4em;
-  cursor: pointer;
-}
-
-.recommendation-box {
-  margin-top: 20px;
-  background: #1e1e2f;
-  padding: 20px;
-  border-radius: 10px;
-  color: #fff;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.recommendation-box pre {
+.recommendations {
+  margin-top: 1.5rem;
+  text-align: left;
   white-space: pre-wrap;
-  word-break: break-word;
-  overflow-x: auto;
-  max-width: 100%;
-  font-family: Consolas, monospace;
-  font-size: 0.95em;
-  margin-top: 10px;
-}
-
-.fade-in {
-  animation: fadeIn 0.5s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
